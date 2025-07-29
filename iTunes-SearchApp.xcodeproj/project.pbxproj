@@ -18,33 +18,9 @@
 		E7E9A9C32E3795AD001E4875 /* iTunes-SearchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iTunes-SearchApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		E7E9AA732E37AF9B001E4875 /* Exceptions for "iTunes-SearchApp" folder in "iTunes-SearchApp" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Resources/iTunes_SearchApp.xcdatamodeld,
-			);
-			target = E7E9A9C22E3795AD001E4875 /* iTunes-SearchApp */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		E7E9AA742E37AF9B001E4875 /* Exceptions for "iTunes-SearchApp" folder in "Compile Sources" phase from "iTunes-SearchApp" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = E7E9A9BF2E3795AD001E4875 /* Sources */;
-			membershipExceptions = (
-				Resources/iTunes_SearchApp.xcdatamodeld,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E7E9AA6B2E37AF9B001E4875 /* iTunes-SearchApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				E7E9AA732E37AF9B001E4875 /* Exceptions for "iTunes-SearchApp" folder in "iTunes-SearchApp" target */,
-				E7E9AA742E37AF9B001E4875 /* Exceptions for "iTunes-SearchApp" folder in "Compile Sources" phase from "iTunes-SearchApp" target */,
-			);
 			path = "iTunes-SearchApp";
 			sourceTree = "<group>";
 		};
