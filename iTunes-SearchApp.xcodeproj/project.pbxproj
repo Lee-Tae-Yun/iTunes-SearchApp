@@ -12,6 +12,7 @@
 		E7E9AA3D2E379944001E4875 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = E7E9AA3C2E379944001E4875 /* Then */; };
 		E7E9AA402E379A43001E4875 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E7E9AA3F2E379A43001E4875 /* RxCocoa */; };
 		E7E9AA422E379A43001E4875 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E7E9AA412E379A43001E4875 /* RxSwift */; };
+		E7E9AB5A2E38994A001E4875 /* LookinServer in Frameworks */ = {isa = PBXBuildFile; productRef = E7E9AB592E38994A001E4875 /* LookinServer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7E9AA372E379918001E4875 /* Alamofire in Frameworks */,
+				E7E9AB5A2E38994A001E4875 /* LookinServer in Frameworks */,
 				E7E9AA3D2E379944001E4875 /* Then in Frameworks */,
 				E7E9AA422E379A43001E4875 /* RxSwift in Frameworks */,
 				E7E9AA402E379A43001E4875 /* RxCocoa in Frameworks */,
@@ -96,6 +98,7 @@
 				E7E9AA3C2E379944001E4875 /* Then */,
 				E7E9AA3F2E379A43001E4875 /* RxCocoa */,
 				E7E9AA412E379A43001E4875 /* RxSwift */,
+				E7E9AB592E38994A001E4875 /* LookinServer */,
 			);
 			productName = "iTunes-SearchApp";
 			productReference = E7E9A9C32E3795AD001E4875 /* iTunes-SearchApp.app */;
@@ -130,6 +133,7 @@
 				E7E9AA382E379933001E4875 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				E7E9AA3B2E379944001E4875 /* XCRemoteSwiftPackageReference "Then" */,
 				E7E9AA3E2E379A43001E4875 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				E7E9AB582E38994A001E4875 /* XCRemoteSwiftPackageReference "LookinServer" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E7E9A9C42E3795AD001E4875 /* Products */;
@@ -391,6 +395,14 @@
 				minimumVersion = 6.9.0;
 			};
 		};
+		E7E9AB582E38994A001E4875 /* XCRemoteSwiftPackageReference "LookinServer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/QMUI/LookinServer/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.8;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -418,6 +430,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E7E9AA3E2E379A43001E4875 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		E7E9AB592E38994A001E4875 /* LookinServer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E7E9AB582E38994A001E4875 /* XCRemoteSwiftPackageReference "LookinServer" */;
+			productName = LookinServer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
