@@ -19,6 +19,7 @@ final class APIService {
             observer.onCompleted()
           case .failure(let error):
             observer.onError(error)
+            print("API Error: \(error)")
           }
         }
 

@@ -49,17 +49,13 @@ final class HomeViewModel {
   private func fetchMusic() {
     musicUseCase.fetch()
       .subscribe(onNext: { [weak self] music in
-        var newState = self?.stateRelay.value
-        newState?.music = music
-        if let state = newState {
-          self?.stateRelay.accept(state)
-        }
+        guard var newState = self?.stateRelay.value else { return }
+        newState.music = music
+        self?.stateRelay.accept(newState)
       }, onError: { [weak self] error in
-        var newState = self?.stateRelay.value
-        newState?.errorMessage = error.localizedDescription
-        if let state = newState {
-          self?.stateRelay.accept(state)
-        }
+        guard var newState = self?.stateRelay.value else { return }
+        newState.errorMessage = error.localizedDescription
+        self?.stateRelay.accept(newState)
       })
       .disposed(by: disposeBag)
   }

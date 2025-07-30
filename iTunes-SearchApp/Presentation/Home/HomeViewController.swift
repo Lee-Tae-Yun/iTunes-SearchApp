@@ -12,11 +12,22 @@ import RxSwift
 import RxCocoa
 
 class HomeViewController: UIViewController {
-  
+  private let viewModel: HomeViewModel
+  private let disposeBag = DisposeBag()
+
   // 서치바
   private let searchController = UISearchController(searchResultsController: nil).then {
     $0.obscuresBackgroundDuringPresentation = false // 배경 흐림 제거
     $0.searchBar.placeholder = "영화, 팟캐스트"
+  }
+
+  init(viewModel: HomeViewModel) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   override func viewDidLoad() {
@@ -25,6 +36,9 @@ class HomeViewController: UIViewController {
     setUpNavigationBar()
     setUpUI()
     setUpConstraints()
+
+    viewModel.action.accept(.loadMusic)
+    bindViewModel()
   }
 
   private func setUpNavigationBar() {
@@ -41,5 +55,14 @@ class HomeViewController: UIViewController {
 
   private func setUpConstraints() {
 
+  }
+
+  private func bindViewModel() {
+    viewModel.state
+      .observe(on: MainScheduler.instance) // UI 갱신은 메인 스레드에서
+      .subscribe(onNext: { [weak self] state in
+        print("받은 음악 데이터:", state.music)
+      })
+      .disposed(by: disposeBag)
   }
 }
