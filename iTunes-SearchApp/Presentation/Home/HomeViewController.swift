@@ -8,9 +8,11 @@
 import UIKit
 import Then
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class HomeViewController: UIViewController {
-
+  
   // 서치바
   private let searchController = UISearchController(searchResultsController: nil).then {
     $0.obscuresBackgroundDuringPresentation = false // 배경 흐림 제거

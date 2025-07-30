@@ -9,4 +9,3 @@ import RxSwift
 protocol MusicRepository {
   func fetchMusic(query: String) -> Observable<[Music]>
 }
-
