@@ -27,7 +27,9 @@ final class SearchViewModel {
   }
 
   struct State {
-    var results: [SearchResult] = []
+    var movieresults: [Movie] = []
+    var podcastresults: [Podcast] = []
+    var searchResult: [SearchResult] = []
     var errorMessage: String?
   }
 
@@ -50,7 +52,9 @@ final class SearchViewModel {
     searchUseCase.search(query: query)
       .subscribe(onNext: { [weak self] results in
         guard var newState = self?.stateRelay.value else { return }
-        newState.results = [results]
+        newState.movieresults = results.movies
+        newState.podcastresults = results.podcasts
+        newState.searchResult = [results]
         self?.stateRelay.accept(newState)
       }, onError: { [weak self] error in
         guard var newState = self?.stateRelay.value else { return }
@@ -58,7 +62,6 @@ final class SearchViewModel {
         self?.stateRelay.accept(newState)
       })
       .disposed(by: disposeBag)
-
   }
 
 }

@@ -13,26 +13,26 @@ import SnapKit
 class SearchViewController: UIViewController {
   private let viewModel: SearchViewModel
   private let disposeBag = DisposeBag()
-  private let queryObservable: Observable<String>
+  private let queryRelay: BehaviorRelay<String>
 
   // 서치바
-  private let searchController = UISearchController(searchResultsController: nil).then {
-    $0.obscuresBackgroundDuringPresentation = false // 배경 흐림 제거
-    $0.searchBar.placeholder = "영화, 팟캐스트"
-  }
+//  private let searchController = UISearchController(searchResultsController: nil).then {
+//    $0.obscuresBackgroundDuringPresentation = false // 배경 흐림 제거
+//    $0.searchBar.placeholder = "영화, 팟캐스트"
+//  }
 
-  private lazy var serachCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
-    $0.backgroundColor = .systemBackground
-    $0.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderView.identifier)
-    $0.register(MovieViewCell.self, forCellWithReuseIdentifier: MovieViewCell.identifier)
-    $0.register(PodcastViewCell.self, forCellWithReuseIdentifier: PodcastViewCell.identifier)
+//  private lazy var searchCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
+//    $0.backgroundColor = .systemBackground
+//    $0.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderView.identifier)
+//    $0.register(MovieViewCell.self, forCellWithReuseIdentifier: MovieViewCell.identifier)
+//    $0.register(PodcastViewCell.self, forCellWithReuseIdentifier: PodcastViewCell.identifier)
+//
+//    $0.showsVerticalScrollIndicator = false
+//  }
 
-    $0.showsVerticalScrollIndicator = false
-  }
-
-  init(query: Observable<String>, viewModel: SearchViewModel) {
+  init(query: BehaviorRelay<String>, viewModel: SearchViewModel) {
     self.viewModel = viewModel
-    self.queryObservable = query
+    self.queryRelay = query
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -44,37 +44,42 @@ class SearchViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .systemBackground
-    setUpNavigationBar()
+//    setUpNavigationBar()
     setUI()
     setConstraints()
-    serachCollectionView.dataSource = self
-
+//    searchCollectionView.dataSource = self
 
     bindViewModel()
   }
 
-  private func setUpNavigationBar() {
-    navigationItem.title = "Music" // 네비게이션 타이틀
-    navigationController?.navigationBar.prefersLargeTitles = true // 대제목을 선호한다고 설정
-    navigationItem.largeTitleDisplayMode = .automatic // 상황에 따라 large, inline 자동 전환
-    navigationItem.searchController = searchController
-    navigationItem.hidesSearchBarWhenScrolling = false // 항상 검색바 보이게
-  }
+//  private func setUpNavigationBar() {
+//    navigationItem.title = "Music" // 네비게이션 타이틀
+//    navigationController?.navigationBar.prefersLargeTitles = true // 대제목을 선호한다고 설정
+//    navigationItem.largeTitleDisplayMode = .automatic // 상황에 따라 large, inline 자동 전환
+//    navigationItem.searchController = searchController
+//    navigationItem.hidesSearchBarWhenScrolling = false // 항상 검색바 보이게
+//  }
 
   // MARK: - SetUPUI
   private func setUI() {
-    [serachCollectionView].forEach {view.addSubview($0) }
+//    [searchCollectionView].forEach {view.addSubview($0) }
   }
 
   private func setConstraints() {
-    serachCollectionView.snp.makeConstraints {
-      $0.top.equalTo(view.safeAreaLayoutGuide)
-      $0.leading.trailing.bottom.equalToSuperview()
-    }
+//    searchCollectionView.snp.makeConstraints {
+//      $0.top.equalTo(view.safeAreaLayoutGuide)
+//      $0.leading.trailing.bottom.equalToSuperview()
+//    }
   }
 
   private func bindViewModel() {
-    queryObservable
+    queryRelay
+      .subscribe(onNext: { query in
+        print("🔍 전달받은 검색어: \(query)")
+      })
+      .disposed(by: disposeBag)
+
+    queryRelay
       .map {
         .search($0)
       }
@@ -84,8 +89,11 @@ class SearchViewController: UIViewController {
     viewModel.state
       .observe(on: MainScheduler.instance) // UI 갱신은 메인 스레드에서
       .subscribe(onNext: { state in
-        print("받은 데이터:", state.results)
-        self.serachCollectionView.reloadData()
+        print("받은 영화 데이터:", state.movieresults)
+        print("받은 팟캐스트 데이터:", state.podcastresults)
+        print("받은 데이터", state)
+
+//        self.searchCollectionView.reloadData()
       })
       .disposed(by: disposeBag)
   }

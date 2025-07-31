@@ -17,7 +17,7 @@ class HomeViewController: UIViewController {
   private lazy var searchTextRelay = BehaviorRelay<String>(value: "")
 
   let container = DIContainer()
-  lazy var searchResultsVC = container.makeSearchViewController(query: self.searchTextRelay.asObservable())
+  lazy var searchResultsVC = container.makeSearchViewController(query: self.searchTextRelay)
   // 서치바
   lazy var searchController = UISearchController(searchResultsController: searchResultsVC).then {
     $0.obscuresBackgroundDuringPresentation = false // 배경 흐림 제거
@@ -55,6 +55,10 @@ class HomeViewController: UIViewController {
 
     viewModel.action.accept(.loadMusic)
     bindViewModel()
+
+    searchController.searchBar.rx.text.orEmpty
+      .bind(to: searchTextRelay)
+      .disposed(by: disposeBag)
   }
 
   private func setUpNavigationBar() {
@@ -166,13 +170,6 @@ class HomeViewController: UIViewController {
   }
 }
 
-// MARK: - UISearchBarUpdating
-extension HomeViewController: UISearchResultsUpdating {
-  func updateSearchResults(for searchController: UISearchController) {
-    guard let query = searchController.searchBar.text else { return }
-    searchTextRelay.accept(query)
-  }
-}
 
 // MARK: - DataSource
 extension HomeViewController: UICollectionViewDataSource {
