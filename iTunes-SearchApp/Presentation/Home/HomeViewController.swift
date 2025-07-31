@@ -23,6 +23,7 @@ class HomeViewController: UIViewController {
 
   private lazy var musicCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
     $0.backgroundColor = .systemBackground
+    $0.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderView.identifier)
     $0.register(SpringViewCell.self, forCellWithReuseIdentifier: SpringViewCell.identifier)
     $0.register(SummerViewCell.self, forCellWithReuseIdentifier: SummerViewCell.identifier)
     $0.register(AutumnViewCell.self, forCellWithReuseIdentifier: AutumnViewCell.identifier)
@@ -101,11 +102,14 @@ class HomeViewController: UIViewController {
   }
   // 카드형
   private func springSectionLayout() -> NSCollectionLayoutSection {
+    let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44))
+    let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
     let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(300))
     let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
+    section.boundarySupplementaryItems = [header]
     section.orthogonalScrollingBehavior = .groupPagingCentered
     section.interGroupSpacing = 16
     section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
@@ -114,11 +118,14 @@ class HomeViewController: UIViewController {
 
   // 세로 리스트형
   private func summerSectionLayout() -> NSCollectionLayoutSection {
+    let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44))
+    let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
     let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0 / 3.0))
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(300))
     let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, repeatingSubitem: item, count: 3)
     let section = NSCollectionLayoutSection(group: group)
+    section.boundarySupplementaryItems = [header]
     section.orthogonalScrollingBehavior = .groupPagingCentered
     section.interGroupSpacing = 8
     section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16)
@@ -126,11 +133,14 @@ class HomeViewController: UIViewController {
   }
 
   private func autumnSectionLayout() -> NSCollectionLayoutSection {
+    let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44))
+    let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
     let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0 / 3.0))
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(300))
     let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, repeatingSubitem: item, count: 3)
     let section = NSCollectionLayoutSection(group: group)
+    section.boundarySupplementaryItems = [header]
     section.orthogonalScrollingBehavior = .groupPagingCentered
     section.interGroupSpacing = 8
     section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16)
@@ -138,11 +148,14 @@ class HomeViewController: UIViewController {
   }
 
   private func winterSectionLayout() -> NSCollectionLayoutSection {
+    let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(44))
+    let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
     let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0 / 3.0))
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(300))
     let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, repeatingSubitem: item, count: 3)
     let section = NSCollectionLayoutSection(group: group)
+    section.boundarySupplementaryItems = [header]
     section.orthogonalScrollingBehavior = .groupPagingCentered
     section.interGroupSpacing = 8
     section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16)
@@ -198,5 +211,17 @@ extension HomeViewController: UICollectionViewDataSource {
     default:
       fatalError("섹션 에러입니다애용")
     }
+  }
+
+  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    guard kind == UICollectionView.elementKindSectionHeader else {
+      return UICollectionReusableView()
+    }
+
+    let header = collectionView.dequeueReusableSupplementaryView(
+      ofKind: kind, withReuseIdentifier: HeaderView.identifier, for: indexPath) as! HeaderView
+    let sectionTitles = ["🌸 봄", "☀️ 여름", "🍂 가을", "❄️ 겨울"]
+    header.configure(title: sectionTitles[indexPath.section])
+    return header
   }
 }
