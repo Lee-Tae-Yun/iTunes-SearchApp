@@ -13,7 +13,7 @@ class SpringViewCell: UICollectionViewCell {
   static let identifier: String = "SpringViewCell"
 
   private let imageView = UIImageView().then {
-    $0.contentMode = .scaleToFill
+    $0.contentMode = .scaleAspectFill
     $0.clipsToBounds = true
     $0.layer.cornerRadius = 8
   }
@@ -70,18 +70,18 @@ class SpringViewCell: UICollectionViewCell {
 
     titleLabel.snp.makeConstraints {
       $0.top.equalTo(imageView.snp.bottom).offset(8)
-      $0.leading.trailing.equalToSuperview().inset(8)
+      $0.leading.trailing.equalTo(imageView)
     }
 
     artistLabel.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).offset(4)
-      $0.leading.trailing.equalToSuperview().inset(8)
+      $0.leading.trailing.equalTo(imageView)
 
     }
 
     collectionLabel.snp.makeConstraints {
       $0.top.equalTo(artistLabel.snp.bottom).offset(4)
-      $0.leading.trailing.equalToSuperview().inset(8)
+      $0.leading.trailing.equalTo(imageView)
       $0.bottom.lessThanOrEqualToSuperview().inset(8)
     }
   }

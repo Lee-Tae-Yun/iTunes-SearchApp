@@ -12,7 +12,7 @@ class WinterViewCell: UICollectionViewCell {
   static let identifier: String = "WinterViewCell"
 
   private let imageView = UIImageView().then {
-    $0.contentMode = .scaleToFill
+    $0.contentMode = .scaleAspectFit
     $0.clipsToBounds = true
     $0.layer.cornerRadius = 8
   }
