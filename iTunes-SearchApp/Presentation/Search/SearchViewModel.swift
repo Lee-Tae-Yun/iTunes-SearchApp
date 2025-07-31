@@ -8,40 +8,57 @@ import RxSwift
 import RxRelay
 
 final class SearchViewModel {
-    let action = PublishRelay<Action>()
-    var state: Observable<State> {
-      stateRelay.asObservable()
+  let action = PublishRelay<Action>()
+  var state: Observable<State> {
+    stateRelay.asObservable()
+  }
+
+  private let stateRelay = BehaviorRelay<State>(value: State())
+  private let disposeBag = DisposeBag()
+  private let searchUseCase:SearchUseCase
+
+  init(searchUseCase: SearchUseCase) {
+    self.searchUseCase = searchUseCase
+    bind()
+  }
+
+  enum Action {
+    case search(String)
+  }
+
+  struct State {
+    var results: [SearchResult] = []
+    var errorMessage: String?
+  }
+
+  private func handle(_ action: Action) {
+    switch action {
+    case .search(let query):
+      fetchSearch(for: query)
     }
+  }
 
-    private let stateRelay = BehaviorRelay<State>(value: State())
-    private let disposeBag = DisposeBag()
-    private let searchUseCase:SearchUseCase
+  private func bind() {
+    action
+      .subscribe(onNext: { [weak self] action in
+        self?.handle(action)
+      })
+      .disposed(by: disposeBag)
+  }
 
-    init(searchUseCase: SearchUseCase) {
-      self.searchUseCase = searchUseCase
-      bind()
-    }
+  private func fetchSearch(for query: String) {
+    searchUseCase.search(query: query)
+      .subscribe(onNext: { [weak self] results in
+        guard var newState = self?.stateRelay.value else { return }
+        newState.results = [results]
+        self?.stateRelay.accept(newState)
+      }, onError: { [weak self] error in
+        guard var newState = self?.stateRelay.value else { return }
+        newState.errorMessage = error.localizedDescription
+        self?.stateRelay.accept(newState)
+      })
+      .disposed(by: disposeBag)
 
-    enum Action {
-
-    }
-
-    struct State {
-
-    }
-
-    private func handle(_ action: Action) {
-      switch action {
-
-      }
-    }
-
-    private func bind() {
-      action
-        .subscribe(onNext: { [weak self] action in
-          self?.handle(action)
-        })
-        .disposed(by: disposeBag)
-    }
+  }
 
 }

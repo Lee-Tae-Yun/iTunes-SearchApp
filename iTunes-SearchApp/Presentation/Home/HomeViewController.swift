@@ -14,9 +14,12 @@ import RxCocoa
 class HomeViewController: UIViewController {
   private let viewModel: HomeViewModel
   private let disposeBag = DisposeBag()
+  private lazy var searchTextRelay = BehaviorRelay<String>(value: "")
 
+  let container = DIContainer()
+  lazy var searchResultsVC = container.makeSearchViewController(query: self.searchTextRelay.asObservable())
   // 서치바
-  private let searchController = UISearchController(searchResultsController: nil).then {
+  lazy var searchController = UISearchController(searchResultsController: searchResultsVC).then {
     $0.obscuresBackgroundDuringPresentation = false // 배경 흐림 제거
     $0.searchBar.placeholder = "영화, 팟캐스트"
   }
@@ -106,7 +109,7 @@ class HomeViewController: UIViewController {
     let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
     let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(400))
+    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(380))
     let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
     section.boundarySupplementaryItems = [header]
@@ -160,6 +163,14 @@ class HomeViewController: UIViewController {
     section.interGroupSpacing = 8
     section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 16, trailing: 16)
     return section
+  }
+}
+
+// MARK: - UISearchBarUpdating
+extension HomeViewController: UISearchResultsUpdating {
+  func updateSearchResults(for searchController: UISearchController) {
+    guard let query = searchController.searchBar.text else { return }
+    searchTextRelay.accept(query)
   }
 }
 
@@ -241,5 +252,4 @@ extension HomeViewController: UICollectionViewDataSource {
       fatalError("섹션 에러입니다애용")
     }
   }
-
 }
