@@ -15,4 +15,8 @@ struct Music: Decodable {
   let collectionName: String?  // 앨범 이름
   let artworkUrl100: String   // 썸네일
   let previewUrl: String      // 미리 듣기 URL
+
+  var artworkUrl512: String {
+    return artworkUrl100.replacingOccurrences(of: "100x100", with: "512x512")
+  }
 }

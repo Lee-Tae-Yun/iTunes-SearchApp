@@ -80,7 +80,7 @@ class WinterViewCell: UICollectionViewCell {
 
   // 전달받은 데이터를 셀 UI에 반영
   func configure(with winter: Music) {
-    if let url = URL(string: winter.artworkUrl100) {
+    if let url = URL(string: winter.artworkUrl512) {
       imageView.af.setImage(withURL: url)
     }
     titleLabel.text = winter.trackName

@@ -80,7 +80,7 @@ class SummerViewCell: UICollectionViewCell {
 
   // 전달받은 데이터를 셀 UI에 반영
   func configure(with summer: Music) {
-    if let url = URL(string: summer.artworkUrl100) {
+    if let url = URL(string: summer.artworkUrl512) {
       imageView.af.setImage(withURL: url)
     }
     titleLabel.text = summer.trackName

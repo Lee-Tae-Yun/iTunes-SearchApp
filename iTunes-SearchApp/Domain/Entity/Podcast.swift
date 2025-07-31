@@ -16,4 +16,8 @@ struct Podcast: Decodable {
   let releaseDate: String       // 최근 업데이트 날자
   let artworkUrl100: String     // 썸네일
   let primaryGenreName: String  // 장르
+
+  var artworkUrl512: String {
+    return artworkUrl100.replacingOccurrences(of: "100x100", with: "512x512")
+  }
 }

@@ -17,4 +17,8 @@ struct Movie: Decodable {
   let releaseDate: String       // 출시일
   let artworkUrl100: String     // 포스터 썸네일
   let previewUrl: String        // 예고편 URL
+
+  var artworkUrl512: String {
+    return artworkUrl100.replacingOccurrences(of: "100x100", with: "512x512")
+  }
 }

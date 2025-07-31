@@ -88,7 +88,7 @@ class SpringViewCell: UICollectionViewCell {
 
   // 전달받은 데이터를 셀 UI에 반영
   func configure(with spring: Music) {
-    if let url = URL(string: spring.artworkUrl100) {
+    if let url = URL(string: spring.artworkUrl512) {
       imageView.af.setImage(withURL: url)
     }
     titleLabel.text = spring.trackName
