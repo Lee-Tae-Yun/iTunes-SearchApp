@@ -165,10 +165,12 @@ class HomeViewController: UIViewController {
 
 // MARK: - DataSource
 extension HomeViewController: UICollectionViewDataSource {
+  // 섹션 수
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     return 4
   }
 
+  // 섹션별 셀 수
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     switch section {
     case 0:
@@ -184,27 +186,54 @@ extension HomeViewController: UICollectionViewDataSource {
     }
   }
 
+  // 헤더
+  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    guard kind == UICollectionView.elementKindSectionHeader else {
+      return UICollectionReusableView()
+    }
+
+    guard let header = collectionView.dequeueReusableSupplementaryView(
+      ofKind: kind, withReuseIdentifier: HeaderView.identifier, for: indexPath) as? HeaderView else {
+      print("❌ HeaderView 타입 캐스팅 실패")
+      return UICollectionReusableView()
+    }
+    let sectionTitles = ["🌸 봄", "☀️ 여름", "🍂 가을", "❄️ 겨울"]
+    header.configure(title: sectionTitles[indexPath.section])
+    return header
+  }
+
+  // 섹션별 아이템
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     switch indexPath.section {
     case 0:
-      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SpringViewCell.identifier, for: indexPath) as! SpringViewCell
-      guard let item = viewModel.currentState.music["봄"]?[indexPath.item] else {
-        print("asd")
-        return cell }
+      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SpringViewCell.identifier, for: indexPath) as? SpringViewCell else {
+        print("❌ SpringViewCell 타입 캐스팅 실패")
+        return UICollectionViewCell()
+      }
+      guard let item = viewModel.currentState.music["봄"]?[indexPath.item] else { return cell }
       cell.configure(with: item)
       return cell
     case 1:
-      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SummerViewCell.identifier, for: indexPath) as! SummerViewCell
+      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SummerViewCell.identifier, for: indexPath) as? SummerViewCell else {
+        print("❌ SummerViewCell 타입 캐스팅 실패")
+        return UICollectionViewCell()
+      }
       guard let item = viewModel.currentState.music["여름"]?[indexPath.item] else { return cell }
       cell.configure(with: item)
       return cell
     case 2:
-      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AutumnViewCell.identifier, for: indexPath) as! AutumnViewCell
+      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AutumnViewCell.identifier, for: indexPath) as? AutumnViewCell else {
+        print("❌ AutumnViewCell 타입 캐스팅 실패")
+        return UICollectionViewCell()
+      }
       guard let item = viewModel.currentState.music["가을"]?[indexPath.item] else { return cell }
       cell.configure(with: item)
       return cell
     case 3:
-      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WinterViewCell.identifier, for: indexPath) as! WinterViewCell
+      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WinterViewCell.identifier, for: indexPath) as? WinterViewCell else {
+        print("❌ WinterViewCell 타입 캐스팅 실패")
+        return UICollectionViewCell()
+      }
       guard let item = viewModel.currentState.music["겨울"]?[indexPath.item] else { return cell }
       cell.configure(with: item)
       return cell
@@ -213,15 +242,4 @@ extension HomeViewController: UICollectionViewDataSource {
     }
   }
 
-  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    guard kind == UICollectionView.elementKindSectionHeader else {
-      return UICollectionReusableView()
-    }
-
-    let header = collectionView.dequeueReusableSupplementaryView(
-      ofKind: kind, withReuseIdentifier: HeaderView.identifier, for: indexPath) as! HeaderView
-    let sectionTitles = ["🌸 봄", "☀️ 여름", "🍂 가을", "❄️ 겨울"]
-    header.configure(title: sectionTitles[indexPath.section])
-    return header
-  }
 }
