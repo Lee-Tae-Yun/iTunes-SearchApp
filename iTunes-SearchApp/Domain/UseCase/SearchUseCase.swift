@@ -5,6 +5,7 @@
 //  Created by 이태윤 on 7/28/25.
 //
 import RxSwift
+
 struct SearchResult {
   let movies: [Movie]
   let podcasts: [Podcast]

@@ -12,6 +12,10 @@ final class HomeViewModel {
   var state: Observable<State> {
     stateRelay.asObservable()
   }
+  
+  var currentState: State {
+    return stateRelay.value
+  }
 
   private let stateRelay = BehaviorRelay<State>(value: State())
   private let disposeBag = DisposeBag()
