@@ -10,7 +10,7 @@ struct MovieResponse: Decodable {
 }
 
 struct Movie: Decodable {
-  let TrackName: String         // 영화 제목
+  let trackName: String         // 영화 제목
   let artistName: String        // 감독 또는 제작자
   let longDescription: String   // 영화 설명
   let primaryGenreName: String  // 장르

@@ -55,10 +55,6 @@ class HomeViewController: UIViewController {
 
     viewModel.action.accept(.loadMusic)
     bindViewModel()
-
-    searchController.searchBar.rx.text.orEmpty
-      .bind(to: searchTextRelay)
-      .disposed(by: disposeBag)
   }
 
   private func setUpNavigationBar() {
@@ -82,6 +78,10 @@ class HomeViewController: UIViewController {
   }
 
   private func bindViewModel() {
+    searchController.searchBar.rx.text.orEmpty
+      .bind(to: searchTextRelay)
+      .disposed(by: disposeBag)
+    
     viewModel.state
       .observe(on: MainScheduler.instance) // UI 갱신은 메인 스레드에서
       .subscribe(onNext: { state in
