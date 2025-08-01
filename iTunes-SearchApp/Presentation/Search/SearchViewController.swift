@@ -24,6 +24,7 @@ class SearchViewController: UIViewController {
     $0.register(HeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HeaderView.identifier)
     $0.register(MovieViewCell.self, forCellWithReuseIdentifier: MovieViewCell.identifier)
     $0.register(PodcastViewCell.self, forCellWithReuseIdentifier: PodcastViewCell.identifier)
+    $0.register(EmptyViewCell.self, forCellWithReuseIdentifier: EmptyViewCell.identifier)
 
     $0.showsVerticalScrollIndicator = false
   }
@@ -114,7 +115,10 @@ class SearchViewController: UIViewController {
     let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
     let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(600))
+    var groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(600))
+    if viewModel.currentState.movieresults.isEmpty {
+      groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(100))
+    }
     let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
     let section = NSCollectionLayoutSection(group: group)
     section.boundarySupplementaryItems = [header]
@@ -153,9 +157,19 @@ extension SearchViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     switch section {
     case 0:
-      return viewModel.currentState.movieresults.count
+      // 검색 결과가 없을경우
+      if viewModel.currentState.movieresults.isEmpty {
+        return 1
+      } else {
+        return viewModel.currentState.movieresults.count
+      }
     case 1:
-      return viewModel.currentState.podcastresults.count
+      // 검색 결과가 없을경우
+      if viewModel.currentState.podcastresults.isEmpty {
+        return 1
+      } else {
+        return viewModel.currentState.podcastresults.count
+      }
     default:
       return 1
     }
@@ -181,22 +195,40 @@ extension SearchViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     switch indexPath.section {
     case 0:
-      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieViewCell.identifier, for: indexPath) as? MovieViewCell else {
-        print("❌ MovieViewCell 타입 캐스팅 실패")
-        return UICollectionViewCell()
+      // 검색결과가 없을경우
+      if viewModel.currentState.movieresults.isEmpty {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyViewCell.identifier, for: indexPath) as? EmptyViewCell else {
+          print("❌ EmptyViewCell 타입 캐스팅 실패")
+          return UICollectionViewCell()
+        }
+        return cell
+      } else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieViewCell.identifier, for: indexPath) as? MovieViewCell else {
+          print("❌ MovieViewCell 타입 캐스팅 실패")
+          return UICollectionViewCell()
+        }
+        let item = viewModel.currentState.movieresults[indexPath.item]
+        cell.configure(with: item)
+        return cell
       }
-      let item = viewModel.currentState.movieresults[indexPath.item]
-      cell.configure(with: item)
-      return cell
 
     case 1:
-      guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PodcastViewCell.identifier, for: indexPath) as? PodcastViewCell else {
-        print("❌ PodcastViewCell 타입 캐스팅 실패")
-        return UICollectionViewCell()
+      // 검색결과가 없을경우
+      if viewModel.currentState.podcastresults.isEmpty {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyViewCell.identifier, for: indexPath) as? EmptyViewCell else {
+          print("❌ EmptyViewCell 타입 캐스팅 실패")
+          return UICollectionViewCell()
+        }
+        return cell
+      } else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PodcastViewCell.identifier, for: indexPath) as? PodcastViewCell else {
+          print("❌ PodcastViewCell 타입 캐스팅 실패")
+          return UICollectionViewCell()
+        }
+        let item = viewModel.currentState.podcastresults[indexPath.item]
+        cell.configure(with: item)
+        return cell
       }
-      let item = viewModel.currentState.podcastresults[indexPath.item]
-      cell.configure(with: item)
-      return cell
 
     default:
       fatalError("섹션 에러입니다애용")
