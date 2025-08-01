@@ -4,8 +4,8 @@
 //
 //  Created by 이태윤 on 7/30/25.
 //
-
-import Foundation
+import RxSwift
+import RxRelay
 
 final class DIContainer {
 
@@ -38,6 +38,11 @@ final class DIContainer {
   // MARK: - ViewController
   func makeHomeViewController() -> HomeViewController {
     let vc = HomeViewController(viewModel: makeHomeViewModel())
+    return vc
+  }
+
+  func makeSearchViewController(query: BehaviorRelay<String>) -> SearchViewController {
+    let vc = SearchViewController(query: query, viewModel: makeSearchViewModel())
     return vc
   }
 }

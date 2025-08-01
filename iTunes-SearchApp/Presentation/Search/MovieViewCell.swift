@@ -1,16 +1,15 @@
 //
-//  SpringViewCell.swift
+//  MovieViewCell.swift
 //  iTunes-SearchApp
 //
-//  Created by 이태윤 on 7/30/25.
+//  Created by 이태윤 on 7/31/25.
 //
 import SnapKit
 import Then
 import UIKit
-import AlamofireImage
 
-class SpringViewCell: UICollectionViewCell {
-  static let identifier: String = "SpringViewCell"
+class MovieViewCell: UICollectionViewCell {
+  static let identifier: String = "MovieViewCell"
 
   private let imageView = UIImageView().then {
     $0.contentMode = .scaleAspectFill
@@ -19,18 +18,24 @@ class SpringViewCell: UICollectionViewCell {
   }
 
   private let titleLabel = UILabel().then {
-    $0.font = UIFont.boldSystemFont(ofSize: 16)
+    $0.font = UIFont.boldSystemFont(ofSize: 18)
     $0.textColor = .label
     $0.numberOfLines = 2
   }
 
   private let artistLabel = UILabel().then {
-    $0.font = UIFont.systemFont(ofSize: 14)
+    $0.font = UIFont.systemFont(ofSize: 16)
     $0.textColor = .secondaryLabel
     $0.numberOfLines = 1
   }
 
-  private let collectionLabel = UILabel().then {
+  private let primaryGenreLabel = UILabel().then {
+    $0.font = UIFont.systemFont(ofSize: 16)
+    $0.textColor = .secondaryLabel
+    $0.numberOfLines = 1
+  }
+
+  private let releaseDateLabel = UILabel().then {
     $0.font = UIFont.systemFont(ofSize: 14)
     $0.textColor = .secondaryLabel
     $0.numberOfLines = 1
@@ -58,7 +63,7 @@ class SpringViewCell: UICollectionViewCell {
 
   // UI 추가
   private func setUI() {
-    [imageView, titleLabel, artistLabel, collectionLabel].forEach { contentView.addSubview($0) }
+    [imageView, titleLabel, artistLabel, primaryGenreLabel, releaseDateLabel].forEach { contentView.addSubview($0) }
   }
 
   //  레이아웃 설정
@@ -75,24 +80,30 @@ class SpringViewCell: UICollectionViewCell {
 
     artistLabel.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).offset(4)
-      $0.leading.trailing.equalTo(imageView)
-
+      $0.leading.trailing.equalTo(titleLabel)
     }
 
-    collectionLabel.snp.makeConstraints {
+    primaryGenreLabel.snp.makeConstraints {
       $0.top.equalTo(artistLabel.snp.bottom).offset(4)
-      $0.leading.trailing.equalTo(imageView)
+      $0.leading.trailing.equalTo(titleLabel)
+    }
+
+    releaseDateLabel.snp.makeConstraints {
+      $0.top.equalTo(primaryGenreLabel.snp.bottom).offset(4)
+      $0.leading.trailing.equalTo(titleLabel)
       $0.bottom.lessThanOrEqualToSuperview().inset(8)
     }
   }
 
   // 전달받은 데이터를 셀 UI에 반영
-  func configure(with spring: Music) {
-    if let url = URL(string: spring.artworkUrl512) {
+  func configure(with movie: Movie) {
+    if let url = URL(string: movie.artworkUrl512) {
       imageView.af.setImage(withURL: url)
     }
-    titleLabel.text = spring.trackName
-    artistLabel.text = spring.artistName
-    collectionLabel.text = spring.collectionName
+    titleLabel.text = movie.trackName
+    artistLabel.text = movie.artistName
+    primaryGenreLabel.text = movie.primaryGenreName
+    releaseDateLabel.text = movie.releaseDate
   }
 }
+

@@ -12,7 +12,7 @@ class AutumnViewCell: UICollectionViewCell {
   static let identifier: String = "AutumnViewCell"
 
   private let imageView = UIImageView().then {
-    $0.contentMode = .scaleToFill
+    $0.contentMode = .scaleAspectFit
     $0.clipsToBounds = true
     $0.layer.cornerRadius = 8
   }
@@ -80,7 +80,7 @@ class AutumnViewCell: UICollectionViewCell {
 
   // 전달받은 데이터를 셀 UI에 반영
   func configure(with autumn: Music) {
-    if let url = URL(string: autumn.artworkUrl100) {
+    if let url = URL(string: autumn.artworkUrl512) {
       imageView.af.setImage(withURL: url)
     }
     titleLabel.text = autumn.trackName
