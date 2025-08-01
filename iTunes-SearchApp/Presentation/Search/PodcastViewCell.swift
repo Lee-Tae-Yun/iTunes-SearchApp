@@ -29,7 +29,13 @@ class PodcastViewCell: UICollectionViewCell {
     $0.numberOfLines = 1
   }
 
-  private let collectionLabel = UILabel().then {
+  private let primaryGenreLabel = UILabel().then {
+    $0.font = UIFont.systemFont(ofSize: 14)
+    $0.textColor = .secondaryLabel
+    $0.numberOfLines = 1
+  }
+
+  private let releaseDateLabel = UILabel().then {
     $0.font = UIFont.systemFont(ofSize: 14)
     $0.textColor = .secondaryLabel
     $0.numberOfLines = 1
@@ -49,7 +55,7 @@ class PodcastViewCell: UICollectionViewCell {
 
   // UI 추가
   private func setUI() {
-    [imageView, titleLabel, artistLabel, collectionLabel].forEach { contentView.addSubview($0) }
+    [imageView, titleLabel, artistLabel, primaryGenreLabel, releaseDateLabel].forEach { contentView.addSubview($0) }
   }
 
   //  레이아웃 설정
@@ -71,10 +77,16 @@ class PodcastViewCell: UICollectionViewCell {
       $0.leading.trailing.equalTo(titleLabel)
     }
 
-    collectionLabel.snp.makeConstraints {
+    primaryGenreLabel.snp.makeConstraints {
       $0.top.equalTo(artistLabel.snp.bottom).offset(4)
       $0.leading.trailing.equalTo(titleLabel)
+    }
+
+    releaseDateLabel.snp.makeConstraints {
+      $0.top.equalTo(primaryGenreLabel.snp.bottom).offset(4)
+      $0.leading.trailing.equalTo(titleLabel)
       $0.bottom.lessThanOrEqualToSuperview().inset(8)
+
     }
   }
 
@@ -83,6 +95,10 @@ class PodcastViewCell: UICollectionViewCell {
     if let url = URL(string: podcast.artworkUrl512) {
       imageView.af.setImage(withURL: url)
     }
+    titleLabel.text = podcast.collectionName
+    artistLabel.text = podcast.artistName
+    primaryGenreLabel.text = podcast.primaryGenreName
+    releaseDateLabel.text = podcast.releaseDate
   }
 }
 

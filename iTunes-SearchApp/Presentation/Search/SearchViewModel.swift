@@ -13,6 +13,10 @@ final class SearchViewModel {
     stateRelay.asObservable()
   }
 
+  var currentState: State {
+    return stateRelay.value
+  }
+
   private let stateRelay = BehaviorRelay<State>(value: State())
   private let disposeBag = DisposeBag()
   private let searchUseCase:SearchUseCase

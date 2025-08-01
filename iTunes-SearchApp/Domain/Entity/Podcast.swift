@@ -12,7 +12,6 @@ struct PodcastResponse: Decodable {
 struct Podcast: Decodable {
   let collectionName: String    // 팟캐스트 이름
   let artistName: String        // 제작자
-  let feedUrl: String           // RSS 피드 주소
   let releaseDate: String       // 최근 업데이트 날자
   let artworkUrl100: String     // 썸네일
   let primaryGenreName: String  // 장르
