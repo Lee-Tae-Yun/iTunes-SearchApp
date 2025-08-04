@@ -15,7 +15,7 @@ struct PodcastDTO: Decodable {
   let artistName: String        // 제작자
   let releaseDate: String?      // 최근 업데이트 날자
   let artworkUrl100: String     // 썸네일
-  let artworkUrl512: String?     // 썸네일 512X512
+  let artworkUrl512: String?    // 썸네일 512X512
   let primaryGenreName: String? // 장르
 
   func toDomain() -> Podcast {

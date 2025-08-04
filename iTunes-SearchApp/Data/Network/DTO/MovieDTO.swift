@@ -17,7 +17,7 @@ struct MovieDTO: Decodable {
   let primaryGenreName: String  // 장르
   let releaseDate: String       // 출시일
   let artworkUrl100: String     // 포스터 썸네일
-  let artworkUrl512: String?     // 포스터 썸네일 512X512
+  let artworkUrl512: String?    // 포스터 썸네일 512X512
 
   func toDomain() -> Movie {
     return Movie(
