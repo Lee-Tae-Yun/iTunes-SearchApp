@@ -20,7 +20,7 @@ class PodcastViewCell: UICollectionViewCell {
   private let titleLabel = UILabel().then {
     $0.font = UIFont.boldSystemFont(ofSize: 16)
     $0.textColor = .label
-    $0.numberOfLines = 2
+    $0.numberOfLines = 1
   }
 
   private let artistLabel = UILabel().then {

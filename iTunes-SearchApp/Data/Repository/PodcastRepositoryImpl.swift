@@ -17,8 +17,8 @@ final class PodcastRepositoryImpl: PodcastRepository {
     ]
 
     return apiService.fetch(url: url, parameters: parameters)
-      .map { (response: PodcastResponse) in
-        response.results
+      .map { (response: PodcastResponseDTO) in
+        response.results.map { $0.toDomain() }
       }
   }
 }

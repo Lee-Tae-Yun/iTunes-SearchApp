@@ -17,8 +17,8 @@ final class MovieRepositoryImpl: MovieRepository {
     ]
 
     return apiService.fetch(url: url, parameters: parameters)
-      .map { (response: MovieResponse) in
-        response.results
+      .map { (response: MovieResponseDTO) in
+        response.results.map { $0.toDomain() }
       }
   }
 }
