@@ -144,7 +144,6 @@ class SearchViewController: UIViewController {
   }
 
 }
-// TODO: - 디퍼블데이터소스 변경하기
 
 // MARK: - DataSource
 extension SearchViewController: UICollectionViewDataSource {
