@@ -81,7 +81,15 @@ class HomeViewController: UIViewController {
     searchController.searchBar.rx.text.orEmpty
       .bind(to: searchTextRelay)
       .disposed(by: disposeBag)
-    
+
+    // 셀 선택 시 키보드 내리기
+    musicCollectionView.rx.itemSelected
+        .subscribe(onNext: { [weak self] item in
+          self?.searchController.searchBar.searchTextField.resignFirstResponder()
+          print("선택된 셀: \(item)")
+        })
+        .disposed(by: disposeBag)
+
     viewModel.state
       .observe(on: MainScheduler.instance) // UI 갱신은 메인 스레드에서
       .subscribe(onNext: { state in
