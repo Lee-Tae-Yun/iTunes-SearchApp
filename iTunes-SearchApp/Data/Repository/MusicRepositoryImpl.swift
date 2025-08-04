@@ -17,8 +17,8 @@ final class MusicRepositoryImpl: MusicRepository {
     ]
 
     return apiService.fetch(url: url, parameters: parameters)
-      .map { (response: MusicResponse) in
-        response.results
+      .map { (response: MusicResponseDTO) in
+        response.results.map { $0.toDomain() }
       }
   }
 }
